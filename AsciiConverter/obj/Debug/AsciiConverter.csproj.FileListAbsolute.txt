@@ -1,0 +1,12 @@
+C:\Users\Strau307\Documents\Github\AsciiConverter\AsciiConverter\obj\Debug\AsciiConverter.csprojAssemblyReference.cache
+C:\Users\Strau307\Documents\Github\AsciiConverter\AsciiConverter\obj\Debug\AsciiConverter.csproj.CoreCompileInputs.cache
+C:\Users\Strau307\Documents\Github\AsciiConverter\AsciiConverter\bin\Debug\AsciiConverter.exe.config
+C:\Users\Strau307\Documents\Github\AsciiConverter\AsciiConverter\bin\Debug\AsciiConverter.exe
+C:\Users\Strau307\Documents\Github\AsciiConverter\AsciiConverter\bin\Debug\AsciiConverter.pdb
+C:\Users\Strau307\Documents\Github\AsciiConverter\AsciiConverter\obj\Debug\AsciiConverter.exe
+C:\Users\Strau307\Documents\Github\AsciiConverter\AsciiConverter\obj\Debug\AsciiConverter.pdb
+C:\Users\Strau307\Documents\Github\AsciiConverter\AsciiConverter\obj\Debug\AsciiConverter.Properties.Resources.resources
+C:\Users\Strau307\Documents\Github\AsciiConverter\AsciiConverter\obj\Debug\AsciiConverter.csproj.GenerateResource.cache
+C:\Users\Strau307\Documents\Github\AsciiConverter\AsciiConverter\bin\Debug\System.Drawing.Common.dll
+C:\Users\Strau307\Documents\Github\AsciiConverter\AsciiConverter\bin\Debug\System.Drawing.Common.xml
+C:\Users\Strau307\Documents\Github\AsciiConverter\AsciiConverter\obj\Debug\AsciiConverter.csproj.CopyComplete

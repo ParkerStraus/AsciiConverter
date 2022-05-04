@@ -32,20 +32,36 @@ namespace AsciiConverter
                     AsciiPalette = Properties.Resources.AsciiGradient.ToCharArray();
                     break;
             }
-            Console.WriteLine("Would you like to have two color setting enabled?");
+
+
+            Console.WriteLine("Would you like to display the image while its printing?");
             choice = int.Parse(Console.ReadLine());
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.ForegroundColor = ConsoleColor.Black;
+            bool displaychoice = true;
+            int colorchoice;
+            if (choice == 0)
+            {
+                displaychoice = false;
+                colorchoice = 0;
+            }
+            else
+            {
+                Console.WriteLine("Would you like to have two color setting enabled?");
+                colorchoice = int.Parse(Console.ReadLine());
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Black;
+
+            }
             Console.CursorVisible = false;
-            PrintAscii(rawimage,choice);
+
+            PrintAscii(rawimage, colorchoice, imagePath, displaychoice);
             Console.ReadLine();
         }
 
-        static void PrintAscii(Bitmap image, int setting)
+        static void PrintAscii(Bitmap image, int setting, string path, bool displaysetting)
         {
             float XScale = 1;
             float YScale = 2.1f;
-            float AdditionalShit = 2;
+            float AdditionalShit = 1;
             /*while (true)
             {
                 try{
@@ -59,47 +75,61 @@ namespace AsciiConverter
                 }
 
             }*/
-            for(int x = 0; x < image.Width/(XScale * AdditionalShit) ; x++)
+            String[] AsciiText = new string[image.Height / (int)(YScale * AdditionalShit)];
+            for(int y = 0; y < image.Height / (YScale * AdditionalShit); y++)
             {
-                for(int y = 0; y < image.Height/(YScale* AdditionalShit); y++)
+                for(int x = 0; x < image.Width / (XScale * AdditionalShit); x++)
                 {
-                    float value = (float)(image.GetPixel((int)(x *XScale * AdditionalShit), (int)(y *YScale * AdditionalShit)).R);
-                    PrintAsciiPoint(x,y,value, setting);
+                    Color pixelColor = image.GetPixel((int)(x * XScale * AdditionalShit), (int)(y * YScale * AdditionalShit));
+                    float value = (float)(0.2126 * pixelColor.R + 0.7152 * pixelColor.G + 0.0722 * pixelColor.B);
+                    char AddedChar = PrintAsciiPoint(x,y,value, setting,displaysetting);
+                    AsciiText[y] += AddedChar;
                 }
             }
+            if(setting != 1) PrintAsciiToFile(AsciiText,path);
         }
 
-        static void PrintAsciiPoint(int PixelX, int PixelY, float Value, int setting)
+        static char PrintAsciiPoint(int PixelX, int PixelY, float Value, int setting, bool DisplaySetting)
         {
             int AsciiIndex;
             char AsciiChar;
-            switch (setting)
+                switch (setting)
+                {
+                    case 1:
+                        AsciiIndex = (int)((Value / 256f) * AsciiPalette.Length * 2);
+                        if (AsciiIndex > AsciiPalette.Length)
+                        {
+                            Console.BackgroundColor = ConsoleColor.White;
+                            Console.ForegroundColor = ConsoleColor.Black;
+                            AsciiChar = AsciiPalette[AsciiIndex / 2];
+
+                        }
+                        else
+                        {
+                            Console.BackgroundColor = ConsoleColor.Black;
+                            Console.ForegroundColor = ConsoleColor.White;
+                            AsciiChar = AsciiPalette[(AsciiPalette.Length - 1) - AsciiIndex / 2];
+
+                        }
+                        break;
+                    default:
+                        AsciiIndex = (int)((Value / 256f) * AsciiPalette.Length);
+                        AsciiChar = AsciiPalette[AsciiIndex];
+                        break;
+                }
+
+
+            if (DisplaySetting)
             {
-                case 1:
-                    AsciiIndex = (int)((Value / 256f) * AsciiPalette.Length * 2);
-                    if (AsciiIndex > AsciiPalette.Length)
-                    {
-                        Console.BackgroundColor = ConsoleColor.White;
-                        Console.ForegroundColor = ConsoleColor.Black;
-                        AsciiChar = AsciiPalette[AsciiIndex / 2];
-
-                    }
-                    else
-                    {
-                        Console.BackgroundColor = ConsoleColor.Black;
-                        Console.ForegroundColor = ConsoleColor.White;
-                        AsciiChar = AsciiPalette[(AsciiPalette.Length - 1) - AsciiIndex / 2];
-
-                    }
-                    break;
-                default:
-                    AsciiIndex = (int)((Value / 256f) * AsciiPalette.Length);
-                    AsciiChar = AsciiPalette[AsciiIndex];
-                    break;
+                Console.SetCursorPosition(PixelX, PixelY);
+                Console.Write(AsciiChar);
             }
-           
-            Console.SetCursorPosition(PixelX, PixelY);
-            Console.Write(AsciiChar);
+            return AsciiChar;
+        }
+
+        static void PrintAsciiToFile(string[] Lines, string path)
+        {
+            System.IO.File.WriteAllLines(path.Substring(0, path.Length - 4) + "_asciiFile.txt", Lines);
         }
     }
 }
